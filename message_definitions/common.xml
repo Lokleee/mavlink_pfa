@@ -1406,6 +1406,27 @@
         <description>Cancel the current parameter transaction.</description>
       </entry>
     </enum>
+    <enum name="OMNI_ATTITUDE_TARGET_TYPEMASK" bitmask="true">
+      <description>Bitmap to indicate which dimensions should be ignored by the vehicle: a value of 0b00000000 indicates that none of the setpoint dimensions should be ignored.</description>
+      <entry value="1" name="OMNI_ATTITUDE_TARGET_TYPEMASK_BODY_ROLL_RATE_IGNORE">
+        <description>Ignore body roll rate</description>
+      </entry>
+      <entry value="2" name="OMNI_ATTITUDE_TARGET_TYPEMASK_BODY_PITCH_RATE_IGNORE">
+        <description>Ignore body pitch rate</description>
+      </entry>
+      <entry value="4" name="OMNI_ATTITUDE_TARGET_TYPEMASK_BODY_YAW_RATE_IGNORE">
+        <description>Ignore body yaw rate</description>
+      </entry>
+      <entry value="32" name="OMNI_ATTITUDE_TARGET_TYPEMASK_THRUST_BODY_SET">
+        <description>Use 3D body thrust setpoint instead of throttle</description>
+      </entry>
+      <entry value="64" name="OMNI_ATTITUDE_TARGET_TYPEMASK_THROTTLE_IGNORE">
+        <description>Ignore throttle</description>
+      </entry>
+      <entry value="128" name="OMNI_ATTITUDE_TARGET_TYPEMASK_ATTITUDE_IGNORE">
+        <description>Ignore attitude</description>
+      </entry>
+    </enum>
     <!-- The MAV_CMD enum entries describe either: -->
     <!--  * the data payload of mission items (as used in the MISSION_ITEM_INT message) -->
     <!--  * the data payload of mavlink commands (as used in the COMMAND_INT and COMMAND_LONG messages) -->
@@ -5481,6 +5502,28 @@
       <field type="float" name="body_pitch_rate" units="rad/s">Body pitch rate</field>
       <field type="float" name="body_yaw_rate" units="rad/s">Body yaw rate</field>
       <field type="float" name="thrust">Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)</field>
+    </message>
+    <message id="96" name="SET_OMNI_ATTITUDE_TARGET">
+      <description>Sets a desired vehicle attitude(OMNI). Used by an external controller to command the vehicle (manual controller or other system).</description>
+      <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot).</field>
+      <field type="uint8_t" name="target_system">System ID</field>
+      <field type="uint8_t" name="target_component">Component ID</field>
+      <field type="uint8_t" name="type_mask" enum="OMNI_ATTITUDE_TARGET_TYPEMASK" display="bitmask">Bitmap to indicate which dimensions should be ignored by the vehicle.</field>
+      <field type="float[4]" name="q">Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0) from MAV_FRAME_LOCAL_NED to MAV_FRAME_BODY_FRD</field>
+      <field type="float" name="body_roll_rate" units="rad/s">Body roll rate</field>
+      <field type="float" name="body_pitch_rate" units="rad/s">Body pitch rate</field>
+      <field type="float" name="body_yaw_rate" units="rad/s">Body yaw rate</field>
+      <field type="float[3]" name="thrust">Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)</field>
+    </message>
+    <message id="97" name="OMNI_ATTITUDE_TARGET">
+      <description>Reports the current commanded attitude(OMNI) of the vehicle as specified by the autopilot. This should match the commands sent in a SET_ATTITUDE_TARGET message if the vehicle is being controlled this way.</description>
+      <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot).</field>
+      <field type="uint8_t" name="type_mask" enum="OMNI_ATTITUDE_TARGET_TYPEMASK" display="bitmask">Bitmap to indicate which dimensions should be ignored by the vehicle.</field>
+      <field type="float[4]" name="q">Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)</field>
+      <field type="float" name="body_roll_rate" units="rad/s">Body roll rate</field>
+      <field type="float" name="body_pitch_rate" units="rad/s">Body pitch rate</field>
+      <field type="float" name="body_yaw_rate" units="rad/s">Body yaw rate</field>
+      <field type="float[3]" name="thrust">Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)</field>
     </message>
     <message id="84" name="SET_POSITION_TARGET_LOCAL_NED">
       <description>Sets a desired vehicle position in a local north-east-down coordinate frame. Used by an external controller to command the vehicle (manual controller or other system).</description>
