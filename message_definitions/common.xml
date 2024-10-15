@@ -5525,6 +5525,11 @@
       <field type="float" name="body_yaw_rate" units="rad/s">Body yaw rate</field>
       <field type="float[3]" name="thrust">Collective thrust, normalized to 0 .. 1 (-1 .. 1 for vehicles capable of reverse trust)</field>
     </message>
+    <message id="98" name="HOVER_THRUST_ESTIMATE">
+      <description>Reports the current estimate hover thrust of the vehicle as specified by the autopilot.</description>
+      <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot).</field>
+      <field type="float" name="thrust">Estimate hover thrust</field>
+    </message>
     <message id="84" name="SET_POSITION_TARGET_LOCAL_NED">
       <description>Sets a desired vehicle position in a local north-east-down coordinate frame. Used by an external controller to command the vehicle (manual controller or other system).</description>
       <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot).</field>
